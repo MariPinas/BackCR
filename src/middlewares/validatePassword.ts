@@ -7,11 +7,14 @@ export function validatePassword(
   const { password } = req.body;
   const regex = /^(?=.*[A-Z])(?=.*[@]).{6,}$/;
   try {
+    console.log(`2- verificando senha...`);
     if (!password || !regex.test(password)) {
       res.status(400).json({ error: "Senha inválida" });
     }
 
-    next();
+    if (!res.headersSent) {
+      next();
+    }
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }

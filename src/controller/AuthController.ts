@@ -6,6 +6,7 @@ const authService = new AuthService();
 export function login(req: Request, res: Response) {
   const { name } = req.body;
   try {
+    if (res.headersSent) return;
     const user = authService.validateUser(name);
     if (!user) {
       res.status(404).json({ error: "Usuário não encontrado" });
