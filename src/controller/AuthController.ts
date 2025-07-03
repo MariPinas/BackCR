@@ -5,11 +5,14 @@ const authService = new AuthService();
 
 export function login(req: Request, res: Response) {
   const { name } = req.body;
-  const user = authService.validateUser(name);
+  try {
+    const user = authService.validateUser(name);
+    if (!user) {
+      res.status(404).json({ error: "Usuário não encontrado" });
+    }
 
-  if (!user) {
-    return res.status(404).json({ error: "Usuário não encontrado" });
+    res.status(200).json({ message: "Acesso autorizado com sucesso!" });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
-
-  res.status(200).json({ message: "Acesso autorizado com sucesso!" });
 }

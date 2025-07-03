@@ -6,10 +6,13 @@ export function validatePassword(
 ) {
   const { password } = req.body;
   const regex = /^(?=.*[A-Z])(?=.*[@]).{6,}$/;
+  try {
+    if (!password || !regex.test(password)) {
+      res.status(400).json({ error: "Senha inválida" });
+    }
 
-  if (!password || !regex.test(password)) {
-    return res.status(400).json({ error: "Senha inválida" });
+    next();
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
-
-  next();
 }
